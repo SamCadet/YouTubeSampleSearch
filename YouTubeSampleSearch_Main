@@ -1,0 +1,63 @@
+import os
+import sys
+from YouTubeSampleSearch_Ui import Ui_MainWindow
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5 import QtCore
+from PyQt5 import QtWidgets as qtw
+from PyQt5.QtWidgets import QFileDialog, QMainWindow, QApplication
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from pytube import YouTube
+import google_auth_oauthlib.flow
+# import googleapiclient.discover
+# import googleapiclient.errors
+
+
+# YouTube Sample Search - randomized search terms challenge producers to sample obscure music
+
+ytApi = os.environ['YOUTUBE_API_KEY']
+
+
+class Window(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setupUi(self)
+        self.setWindowTitle('YouTube Sample Search')
+        self.downloadButton.setAutoDefault(True)
+        self.browseButton.clicked.connect(self.browseButtonPushed)
+        self.searchButton.clicked.connect(self.searchButtonPushed)
+
+    def browseButtonPushed(self):
+        filename = QFileDialog.getExistingDirectory(self, 'Save File')
+        if filename:
+            self.fileLocationTextEdit.setText(str(filename))
+
+    def searchButtonPushed(self):
+        scopes = ['https://www.googleapis.com/auth/youtube.force-ssl']
+        apiServiceName = 'youtube'
+        apiVersion = 'v3'
+        clientSecretsFile = 'Google_Client_Secret_ID.json'
+        # clientSecretsFile = os.environ['GOOGLE_QUICKSTART']
+
+        flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+            clientSecretsFile, scopes)
+        credentials = flow.run_console()
+        youtube = googleapiclient.discovery.build(
+            apiServiceName, apiVersion, credentials=credentials)
+
+        request = youtube.search().list(part='snippet', maxResults=30, q='rap')
+
+        response = request.execute()
+
+        print(response)
+
+    # def downloadButtonPushed(self):
+
+
+if __name__ == '__main__':
+    app = qtw.QApplication([])
+    app.setStyle('Fusion')
+    window = Window()
+    window.show()
+    sys.exit(app.exec_())
