@@ -9,6 +9,8 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from pytube import YouTube
 import google_auth_oauthlib.flow
+from nltk.corpus import wordnet as wn
+import random
 # import googleapiclient.discover
 # import googleapiclient.errors
 
@@ -28,12 +30,61 @@ class Window(QMainWindow, Ui_MainWindow):
         self.browseButton.clicked.connect(self.browseButtonPushed)
         self.searchButton.clicked.connect(self.searchButtonPushed)
 
-    def browseButtonPushed(self):
-        filename = QFileDialog.getExistingDirectory(self, 'Save File')
-        if filename:
-            self.fileLocationTextEdit.setText(str(filename))
+    def adjectivesGroup(self):
+        adjectives = list()
+
+        for word in wn.all_synsets(wn.ADJECTIVE):
+            adjectives.setText(word.lemma_nouns())
+            if len(adjectives) == 20:
+                break
+
+        adjectivesResult = random.choice(adjectives)
+
+        self.adjectiveLineEdit = str(
+            self.adjectiveLineEdit.setText(adjectivesResult))
+
+        return self.adjectiveLineEdit
+
+    def timePeriodGroup(self):
+        timePeriod = ('50s', '60s', '70s', '80s',
+                      '90s', '00s', '2010s', '2020s')
+
+        timePeriodResult = random.choice(timePeriod)
+
+        self.timePeriodLineEdit = str(
+            self.timePeriodLineEdit.setText(timePeriodResult))
+
+        return self.timePeriodLineEdit
+
+    def areaGroup(self):
+        area = ('Ghanaian', 'Chinese', 'Japanese', 'Indian', 'South African', 'American', 'Mexican', 'Canadian', 'Nigerian', 'Haitian',
+                'Jamaican', 'English', 'French', 'Spanish', 'Puerto Rican', 'Cuban', 'German')
+
+        areaResult = random.choice(area)
+
+        self.nationLineEdit = str(
+            self.nationLineEdit.setText(areaResult))
+
+        return self.nationLineEdit
+
+    def genreGroup(self):
+        genre = ('Rap', 'Rock', 'R&B', 'Soul', 'Pop', 'Metal', 'Classical',
+                 'Country', 'Funk', 'OST', 'TV themes', 'Movie Themes', 'Commercials', 'Movie Soundtracks')
+
+        genreResult = random.choice(genre)
+
+        self.genreLineEdit = str(
+            self.genreLineEdit.setText(genreResult))
+
+        return self.genreLineEdit
 
     def searchButtonPushed(self):
+
+        # self.adjectivesGroup()
+        self.timePeriodGroup()
+        self.areaGroup()
+        self.genreGroup()
+
         scopes = ['https://www.googleapis.com/auth/youtube.force-ssl']
         apiServiceName = 'youtube'
         apiVersion = 'v3'
@@ -46,13 +97,18 @@ class Window(QMainWindow, Ui_MainWindow):
         youtube = googleapiclient.discovery.build(
             apiServiceName, apiVersion, credentials=credentials)
 
-        request = youtube.search().list(part='snippet', maxResults=30, q='rap')
+        request = youtube.search().list(part='snippet', maxResults=30, q='music')
 
         response = request.execute()
 
         print(response)
 
-    # def downloadButtonPushed(self):
+    def browseButtonPushed(self):
+        filename = QFileDialog.getExistingDirectory(self, 'Save File')
+        if filename:
+            self.fileLocationTextEdit.setText(str(filename))
+
+    # TODO: def downloadButtonPushed(self):
 
 
 if __name__ == '__main__':
