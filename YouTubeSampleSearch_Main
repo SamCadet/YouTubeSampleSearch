@@ -11,8 +11,8 @@ from pytube import YouTube
 import google_auth_oauthlib.flow
 from nltk.corpus import wordnet as wn
 import random
-# import googleapiclient.discover
-# import googleapiclient.errors
+import googleapiclient.discovery
+import googleapiclient.errors
 
 
 # YouTube Sample Search - randomized search terms challenge producers to sample obscure music
@@ -97,7 +97,8 @@ class Window(QMainWindow, Ui_MainWindow):
         youtube = googleapiclient.discovery.build(
             apiServiceName, apiVersion, credentials=credentials)
 
-        request = youtube.search().list(part='snippet', maxResults=30, q='music')
+        request = youtube.search().list(part='snippet', maxResults=30,
+                                        q=f'{self.timePeriodLineEdit} + {self.timePeriodLineEdit} + {self.genreLineEdit} + music')
 
         response = request.execute()
 
