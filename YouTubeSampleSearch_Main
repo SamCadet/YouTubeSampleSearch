@@ -40,10 +40,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         adjectivesResult = random.choice(adjectives)
 
-        self.adjectiveLineEdit = str(
-            self.adjectiveLineEdit.setText(adjectivesResult))
-
-        return self.adjectiveLineEdit
+        str(self.adjectiveLineEdit.setText(adjectivesResult))
 
     def timePeriodGroup(self):
         timePeriod = ('50s', '60s', '70s', '80s',
@@ -51,10 +48,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         timePeriodResult = random.choice(timePeriod)
 
-        self.timePeriodLineEdit = str(
-            self.timePeriodLineEdit.setText(timePeriodResult))
-
-        return self.timePeriodLineEdit
+        str(self.timePeriodLineEdit.setText(timePeriodResult))
 
     def areaGroup(self):
         area = ('Ghanaian', 'Chinese', 'Japanese', 'Indian', 'South African', 'American', 'Mexican', 'Canadian', 'Nigerian', 'Haitian',
@@ -73,10 +67,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         genreResult = random.choice(genre)
 
-        self.genreLineEdit = str(
-            self.genreLineEdit.setText(genreResult))
-
-        return self.genreLineEdit
+        str(self.genreLineEdit.setText(genreResult))
 
     def searchButtonPushed(self):
 
