@@ -20,23 +20,10 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="adjectiveQLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>200</y>
-      <width>600</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;adjective&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="timePeriodQLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>30</x>
       <y>200</y>
       <width>600</width>
       <height>31</height>
@@ -77,49 +64,14 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;YouTube Sample Search&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="adjectiveLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>160</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="timePeriodLineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>30</x>
       <y>160</y>
       <width>121</width>
       <height>31</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="videoThumbnailQLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>240</y>
-      <width>261</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="baseSize">
-     <size>
-      <width>16</width>
-      <height>9</height>
-     </size>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QLineEdit" name="genreLineEdit">
@@ -135,7 +87,7 @@
    <widget class="QLabel" name="genreQLabel">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>530</x>
       <y>200</y>
       <width>600</width>
       <height>31</height>
@@ -148,19 +100,22 @@
    <widget class="QLineEdit" name="fileLocationTextEdit">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>20</x>
       <y>300</y>
-      <width>331</width>
+      <width>631</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>Select File Location</string>
     </property>
    </widget>
    <widget class="QComboBox" name="videoQualityBox">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>20</x>
       <y>350</y>
-      <width>331</width>
+      <width>631</width>
       <height>31</height>
      </rect>
     </property>
@@ -194,27 +149,53 @@
      <string>Browse</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="nationLineEdit">
+   <widget class="QLineEdit" name="regionLineEdit">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>280</x>
       <y>160</y>
       <width>121</width>
       <height>31</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="nationQLabel">
+   <widget class="QLabel" name="regionQLabel">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>280</x>
       <y>200</y>
       <width>600</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>nation</string>
+     <string>region</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="youTubeURLTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>240</y>
+      <width>631</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enter YouTube URL here</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="convertURLButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>240</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Convert URL</string>
     </property>
    </widget>
   </widget>

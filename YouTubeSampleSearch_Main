@@ -1,23 +1,14 @@
-import os
 import sys
 from YouTubeSampleSearch_Ui import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
-from PyQt5.QtWidgets import QFileDialog, QMainWindow, QApplication
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
-from pytube import YouTube
-import google_auth_oauthlib.flow
-from nltk.corpus import wordnet as wn
+from PyQt5.QtWidgets import QFileDialog
 import random
-import googleapiclient.discovery
-import googleapiclient.errors
-
+from selenium import webdriver
 
 # YouTube Sample Search - randomized search terms challenge producers to sample obscure music
 
-ytApi = os.environ['YOUTUBE_API_KEY']
+# ytApi = os.environ['YOUTUBE_API_KEY']
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -30,70 +21,49 @@ class Window(QMainWindow, Ui_MainWindow):
         self.browseButton.clicked.connect(self.browseButtonPushed)
         self.searchButton.clicked.connect(self.searchButtonPushed)
 
-    def adjectivesGroup(self):
-        adjectives = list()
-
-        for word in wn.all_synsets(wn.ADJECTIVE):
-            adjectives.setText(word.lemma_nouns())
-            if len(adjectives) == 20:
-                break
-
-        adjectivesResult = random.choice(adjectives)
-
-        str(self.adjectiveLineEdit.setText(adjectivesResult))
-
     def timePeriodGroup(self):
         timePeriod = ('50s', '60s', '70s', '80s',
                       '90s', '00s', '2010s', '2020s')
 
         timePeriodResult = random.choice(timePeriod)
 
-        str(self.timePeriodLineEdit.setText(timePeriodResult))
+        self.timePeriodSearch = str(
+            self.timePeriodLineEdit.setText(timePeriodResult))
 
-    def areaGroup(self):
-        area = ('Ghanaian', 'Chinese', 'Japanese', 'Indian', 'South African', 'American', 'Mexican', 'Canadian', 'Nigerian', 'Haitian',
-                'Jamaican', 'English', 'French', 'Spanish', 'Puerto Rican', 'Cuban', 'German')
+        return self.timePeriodSearch
 
-        areaResult = random.choice(area)
+    def regionGroup(self):
+        region = ('Ghanaian', 'Chinese', 'Japanese', 'Indian', 'South African', 'American', 'Mexican', 'Canadian', 'Nigerian', 'Haitian',
+                  'Jamaican', 'English', 'French', 'Spanish', 'Puerto Rican', 'Cuban', 'German')
 
-        self.nationLineEdit = str(
-            self.nationLineEdit.setText(areaResult))
+        regionResult = random.choice(region)
 
-        return self.nationLineEdit
+        self.regionSearch = str(
+            self.regionLineEdit.setText(regionResult))
+
+        return self.regionSearch
 
     def genreGroup(self):
-        genre = ('Rap', 'Rock', 'R&B', 'Soul', 'Pop', 'Metal', 'Classical',
+        genre = ('Rap', 'Rock', 'Salsa', 'R&B', 'Soul', 'Pop', 'Dancehall', 'Metal', 'Reggae', 'Classical', 'Merengue',
                  'Country', 'Funk', 'OST', 'TV themes', 'Movie Themes', 'Commercials', 'Movie Soundtracks')
 
         genreResult = random.choice(genre)
 
-        str(self.genreLineEdit.setText(genreResult))
+        self.genreSearch = str(self.genreLineEdit.setText(genreResult))
+
+        return self.genreSearch
 
     def searchButtonPushed(self):
 
-        # self.adjectivesGroup()
+        browser = webdriver.Chrome(
+            'C:\\Users\\Sam\\Downloads\\chromedriver.exe')
+
         self.timePeriodGroup()
-        self.areaGroup()
+        self.regionGroup()
         self.genreGroup()
 
-        scopes = ['https://www.googleapis.com/auth/youtube.force-ssl']
-        apiServiceName = 'youtube'
-        apiVersion = 'v3'
-        clientSecretsFile = 'Google_Client_Secret_ID.json'
-        # clientSecretsFile = os.environ['GOOGLE_QUICKSTART']
-
-        flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-            clientSecretsFile, scopes)
-        credentials = flow.run_console()
-        youtube = googleapiclient.discovery.build(
-            apiServiceName, apiVersion, credentials=credentials)
-
-        request = youtube.search().list(part='snippet', maxResults=30,
-                                        q=f'{self.timePeriodLineEdit} + {self.timePeriodLineEdit} + {self.genreLineEdit} + music')
-
-        response = request.execute()
-
-        print(response)
+        browser.get(
+            f'https://www.youtube.com/results?search_query={self.timePeriodSearch}+{self.regionSearch}+{self.genreSearch}+music')
 
     def browseButtonPushed(self):
         filename = QFileDialog.getExistingDirectory(self, 'Save File')
