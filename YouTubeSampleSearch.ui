@@ -110,19 +110,6 @@
      <string>Select File Location</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="videoQualityBox">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>350</y>
-      <width>631</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="currentText">
-     <string/>
-    </property>
-   </widget>
    <widget class="QPushButton" name="searchButton">
     <property name="geometry">
      <rect>
@@ -196,6 +183,19 @@
     </property>
     <property name="text">
      <string>Convert URL</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="downloadCompleteLabel">
+    <property name="geometry">
+     <rect>
+      <x>26</x>
+      <y>354</y>
+      <width>621</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
