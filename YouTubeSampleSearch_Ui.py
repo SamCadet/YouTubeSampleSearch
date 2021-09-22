@@ -57,11 +57,8 @@ class Ui_MainWindow(object):
         self.youTubeURLTextEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.youTubeURLTextEdit.setGeometry(QtCore.QRect(20, 240, 631, 31))
         self.youTubeURLTextEdit.setObjectName("youTubeURLTextEdit")
-        self.convertURLButton = QtWidgets.QPushButton(self.centralwidget)
-        self.convertURLButton.setGeometry(QtCore.QRect(700, 240, 141, 31))
-        self.convertURLButton.setObjectName("convertURLButton")
         self.downloadCompleteLabel = QtWidgets.QLabel(self.centralwidget)
-        self.downloadCompleteLabel.setGeometry(QtCore.QRect(26, 354, 621, 31))
+        self.downloadCompleteLabel.setGeometry(QtCore.QRect(26, 354, 621, 41))
         self.downloadCompleteLabel.setText("")
         self.downloadCompleteLabel.setObjectName("downloadCompleteLabel")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -88,7 +85,6 @@ class Ui_MainWindow(object):
         self.browseButton.setText(_translate("MainWindow", "Browse"))
         self.regionQLabel.setText(_translate("MainWindow", "region"))
         self.youTubeURLTextEdit.setText(_translate("MainWindow", "Enter YouTube URL here"))
-        self.convertURLButton.setText(_translate("MainWindow", "Convert URL"))
 
 
 if __name__ == "__main__":

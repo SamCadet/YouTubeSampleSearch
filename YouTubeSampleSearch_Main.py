@@ -8,9 +8,7 @@ from selenium import webdriver
 from pytube import YouTube
 import os
 
-# YouTube Sample Search - randomized search terms challenge producers to sample obscure music
-
-# ytApi = os.environ['YOUTUBE_API_KEY']
+# YouTube Sample Search - randomized search terms challenge producers to sample obscure music. Users can also convert whatever YouTube video they want to the highest bitrate available via copying and pasting the video's URL into the URL bar.
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -24,8 +22,12 @@ class Window(QMainWindow, Ui_MainWindow):
         self.browseButton.clicked.connect(self.browseButtonPushed)
         self.youTubeURLTextEdit
         self.downloadButton.clicked.connect(self.downloadButtonPushed)
+        self.dlComplete = self.downloadCompleteLabel.setText("")
 
     def timePeriodGroup(self):
+
+        # randomizes time periods available for search
+
         timePeriod = ('50s', '60s', '70s', '80s',
                       '90s', '00s', '2010s', '2020s')
 
@@ -38,8 +40,17 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def regionGroup(self):
 
-        region = ('Ghanaian', 'Chinese', 'Japanese', 'Indian', 'South African', 'American', 'Mexican', 'Canadian', 'Nigerian', 'Haitian',
-                  'Jamaican', 'English', 'French', 'Spanish', 'Puerto Rican', 'Cuban', 'German')
+        # randomizes regions available for search
+
+        region = ('Ghanaian', 'Chinese', 'Japanese', 'Indian', 'South African',      'American', 'Mexican', 'Canadian', 'Nigerian', 'Haitian',
+                  'West Indian', 'Jamaican', 'Russian', 'Turkish', 'English',
+                  'French', 'Spanish', 'Angolan', 'Antiguan', 'Caribbean',
+                  'Jamaican', 'Puerto Rican', 'Cuban', 'German', 'Polish',
+                  'Brazilian', 'Polish', 'Italian', 'Korean', 'Thai', 'Egyptian'
+                  'Malaysian', 'African', 'Asian', 'North American', 'Somalian'
+                  'South American', 'European', 'Australian', 'Kiwi',
+                  'Sudanese', 'Ethiopian', 'Polynesian', 'Tongan', 'Dominican',
+                  'Costa Rican', 'Colombian', 'Gambian', 'Kenyan')
 
         regionResult = random.choice(region)
 
@@ -50,8 +61,15 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def genreGroup(self):
 
-        genre = ('Rap', 'Rock', 'Salsa', 'R&B', 'Soul', 'Pop', 'Dancehall', 'Metal', 'Reggae', 'Classical', 'Merengue',
-                 'Country', 'Funk', 'OST', 'TV themes', 'Movie Themes', 'Commercials', 'Movie Soundtracks', 'Techno', 'House', 'Country', 'Electronic', 'Yacht Rock', 'Hard Rock', 'Hardcore')
+        # randomizes genres available for search
+
+        genre = ('Rap', 'Rock', 'Salsa', 'Kompa', 'Roots', 'R&B', 'Soul', 'Pop',     'Dancehall', 'Metal', 'Reggae', 'Classical', 'Merengue',
+                 'Hardcore Techno', 'High Life', 'EDM', 'Country', 'Funk',
+                 'OST', 'TV theme', 'Movie Theme', 'Acid House', 'Commercial',
+                 'Movie Soundtrack', 'Techno', 'House', 'Country',
+                 'Electronic', 'Yacht Rock', 'Hard Rock', 'Hardcore', 'Folk',
+                 'Indie Rock', 'Indie', 'Bluegrass', 'Psychedelic Rock',
+                 'Rave', 'Dance', 'Breakbeat')
 
         genreResult = random.choice(genre)
 
@@ -60,6 +78,10 @@ class Window(QMainWindow, Ui_MainWindow):
         return self.genreSearch
 
     def searchButtonPushed(self):
+
+        # automates a YouTube search of the aforementioned terms into a new browser window
+
+        self.dlComplete
 
         browser = webdriver.Chrome(
             'C:\\Users\\Sam\\Downloads\\chromedriver.exe')
@@ -73,17 +95,23 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def browseButtonPushed(self):
 
+        # lets the user decide the destination for the audio they want to download
+
+        self.dlComplete
+
         self.filename = QFileDialog.getExistingDirectory(self, 'Save File')
 
         if self.filename:
             self.fileLocationTextEdit.setText(str(self.filename))
 
-        self.dlComplete = self.downloadCompleteLabel.setText("")
-
     def downloadButtonPushed(self):
 
+        # Converts the youtube video in the YouTube URL bar into an mp4 and then an mp3, also gives a prompt when the download's complete
+
+        self.dlComplete
+
         audioLink = YouTube(str(self.youTubeURLTextEdit.text()))
-        audioFile = audioLink.streams.filter(only_audio=True).first()
+        audioFile = audioLink.streams.get_audio_only()
         output = audioFile.download(output_path=self.filename)
 
         file, ext = os.path.splitext(output)
