@@ -34,7 +34,7 @@ class Window(QMainWindow, Ui_MainWindow):
         timePeriodResult = random.choice(timePeriod)
 
         self.timePeriodSearch = str(
-            self.timePeriodLineEdit.setText(timePeriodResult))
+            self.randomTimePeriodLabel.setText(timePeriodResult))
 
         return self.timePeriodSearch
 
@@ -55,7 +55,7 @@ class Window(QMainWindow, Ui_MainWindow):
         regionResult = random.choice(region)
 
         self.regionSearch = str(
-            self.regionLineEdit.setText(regionResult))
+            self.randomRegionLabel.setText(regionResult))
 
         return self.regionSearch
 
@@ -73,7 +73,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         genreResult = random.choice(genre)
 
-        self.genreSearch = str(self.genreLineEdit.setText(genreResult))
+        self.genreSearch = str(self.randomGenreLabel.setText(genreResult))
 
         return self.genreSearch
 
@@ -83,15 +83,14 @@ class Window(QMainWindow, Ui_MainWindow):
 
         self.dlComplete
 
-        browser = webdriver.Chrome(
-            'C:\\Users\\Sam\\Downloads\\chromedriver.exe')
+        browser = webdriver.Chrome()
 
         self.timePeriodGroup()
         self.regionGroup()
         self.genreGroup()
 
         browser.get(
-            f'https://www.youtube.com/results?search_query={self.timePeriodLineEdit.text()}+{self.regionLineEdit.text()}+{self.genreLineEdit.text()}+music')
+            f'https://www.youtube.com/results?search_query={self.randomTimePeriodLabel.text()}+{self.randomRegionLabel.text()}+{self.randomGenreLabel.text()}+music')
 
     def browseButtonPushed(self):
 
