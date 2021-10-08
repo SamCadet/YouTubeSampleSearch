@@ -146,8 +146,8 @@ Search</string>
    <widget class="QLabel" name="downloadCompleteLabel">
     <property name="geometry">
      <rect>
-      <x>26</x>
-      <y>444</y>
+      <x>340</x>
+      <y>440</y>
       <width>621</width>
       <height>41</height>
      </rect>
@@ -206,6 +206,19 @@ Search</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Press 'Begin Sample Search' to find videos via &lt;/p&gt;&lt;p align=&quot;center&quot;&gt;randomized search terms.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>450</y>
+      <width>291</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
     </property>
    </widget>
   </widget>

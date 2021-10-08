@@ -3,10 +3,11 @@ from YouTubeSampleSearch_Ui import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtCore import pyqtSlot
 import random
-from selenium import webdriver
 from pytube import YouTube
 import os
+import webbrowser
 
 # YouTube Sample Search - randomized search terms challenge producers to sample obscure music. Users can also convert whatever YouTube video they want to the highest bitrate available via copying and pasting the video's URL into the URL bar.
 
@@ -20,8 +21,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.downloadButton.setAutoDefault(True)
         self.searchButton.clicked.connect(self.searchButtonPushed)
         self.browseButton.clicked.connect(self.browseButtonPushed)
-        self.youTubeURLTextEdit
         self.downloadButton.clicked.connect(self.downloadButtonPushed)
+        self.youTubeURLTextEdit
         self.dlComplete = self.downloadCompleteLabel.setText("")
 
     def timePeriodGroup(self):
@@ -46,11 +47,12 @@ class Window(QMainWindow, Ui_MainWindow):
                   'West Indian', 'Jamaican', 'Russian', 'Turkish', 'English',
                   'French', 'Spanish', 'Angolan', 'Antiguan', 'Caribbean',
                   'Jamaican', 'Puerto Rican', 'Cuban', 'German', 'Polish',
-                  'Brazilian', 'Polish', 'Italian', 'Korean', 'Thai', 'Egyptian'
-                  'Malaysian', 'African', 'Asian', 'North American', 'Somalian'
-                  'South American', 'European', 'Australian', 'Kiwi',
-                  'Sudanese', 'Ethiopian', 'Polynesian', 'Tongan', 'Dominican',
-                  'Costa Rican', 'Colombian', 'Gambian', 'Kenyan')
+                  'Brazilian', 'Polish', 'Italian', 'Korean', 'Thai',
+                  'Egyptian', 'Malaysian', 'African', 'Asian',
+                  'North American', 'Somalian', 'South American', 'European',
+                  'Australian', 'Kiwi', 'Sudanese', 'Ethiopian', 'Polynesian',
+                  'Tongan', 'Dominican', 'Costa Rican', 'Colombian',
+                  'Gambian', 'Kenyan')
 
         regionResult = random.choice(region)
 
@@ -63,13 +65,13 @@ class Window(QMainWindow, Ui_MainWindow):
 
         # randomizes genres available for search
 
-        genre = ('Rap', 'Rock', 'Salsa', 'Kompa', 'Roots', 'R&B', 'Soul', 'Pop',     'Dancehall', 'Metal', 'Reggae', 'Classical', 'Merengue',
+        genre = ('Rap', 'Rock', 'Salsa', 'Kompa', 'Roots', 'RNB', 'Soul', 'Pop',     'Dancehall', 'Metal', 'Reggae', 'Classical', 'Merengue',
                  'Hardcore Techno', 'High Life', 'EDM', 'Country', 'Funk',
-                 'OST', 'TV theme', 'Movie Theme', 'Acid House', 'Commercial',
-                 'Movie Soundtrack', 'Techno', 'House', 'Country',
-                 'Electronic', 'Yacht Rock', 'Hard Rock', 'Hardcore', 'Folk',
-                 'Indie Rock', 'Indie', 'Bluegrass', 'Psychedelic Rock',
-                 'Rave', 'Dance', 'Breakbeat')
+                 'Movie OST', 'Game OST', 'TV theme', 'Movie Theme',
+                 'Acid House', 'Commercial', 'Movie Soundtrack', 'Techno',
+                 'House', 'Country', 'Electronic', 'Yacht Rock', 'Hard Rock',
+                 'Hardcore', 'Folk', 'Indie Rock', 'Indie', 'Bluegrass',
+                 'Psychedelic Rock', 'Rave', 'Dance', 'Breakbeat')
 
         genreResult = random.choice(genre)
 
@@ -79,39 +81,53 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def searchButtonPushed(self):
 
-        # automates a YouTube search of the aforementioned terms into a new browser window
+        # automates a YouTube search of the aforementioned terms into a new browser tab
 
         self.dlComplete
-
-        browser = webdriver.Chrome()
 
         self.timePeriodGroup()
         self.regionGroup()
         self.genreGroup()
 
-        browser.get(
-            f'https://www.youtube.com/results?search_query={self.randomTimePeriodLabel.text()}+{self.randomRegionLabel.text()}+{self.randomGenreLabel.text()}+music')
+        webbrowser.open_new_tab(
+            f'https://www.youtube.com/results?search_query={self.randomTimePeriodLabel.text()}+{self.randomRegionLabel.text()}+{self.randomGenreLabel.text()}')
+
+    def removeReservedChars(self, youTubeURL):
+
+        reservedChars = {'<', '>', ':', '"', '/', '\\', '|', '?', '*'}
+
+        for char in youTubeURL:
+            if char in reservedChars:
+                youTubeURL = youTubeURL.replace(char, '_')
+
+        return youTubeURL
 
     def browseButtonPushed(self):
 
         # lets the user decide the destination for the audio they want to download
 
-        self.dlComplete
+        self.linkString = self.youTubeURLTextEdit.text()
+        self.YouTubeURL = YouTube(self.linkString)
 
-        self.filename = QFileDialog.getExistingDirectory(self, 'Save File')
+        self.fileLocation = QFileDialog.getExistingDirectory(self, 'Save File')
+        self.fileName = self.removeReservedChars(str(self.YouTubeURL.title))
+        print(self.fileName)
 
-        if self.filename:
-            self.fileLocationTextEdit.setText(str(self.filename))
+        if self.fileLocation:
+            self.fileLocationTextEdit.setText(
+                f'{self.fileLocation}/{self.fileName}')
 
+    @pyqtSlot()
     def downloadButtonPushed(self):
 
         # Converts the youtube video in the YouTube URL bar into an mp4 and then an mp3, also gives a prompt when the download's complete
 
-        self.dlComplete
-
-        audioLink = YouTube(str(self.youTubeURLTextEdit.text()))
+        audioLink = YouTube(self.youTubeURLTextEdit.text())
         audioFile = audioLink.streams.get_audio_only()
-        output = audioFile.download(output_path=self.filename)
+        output = audioFile.download(
+            output_path=self.fileLocation, filename=self.fileName)
+
+        self.linkString.register_on_progress_callback(self.fileProgress)
 
         file, ext = os.path.splitext(output)
         mp3File = file + '.mp3'
@@ -119,6 +135,11 @@ class Window(QMainWindow, Ui_MainWindow):
 
         self.dlComplete = self.downloadCompleteLabel.setText(
             "Download Complete!")
+
+    def fileProgress(self, stream, chunk, bytes_remaining):
+        size = stream.filesize
+        progress = int((abs(bytes_remaining - size) / size)) * 100
+        self.progressBar.setValue(progress)
 
 
 if __name__ == '__main__':
