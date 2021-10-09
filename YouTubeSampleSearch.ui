@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
+    <width>870</width>
     <height>540</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>860</width>
+    <width>870</width>
     <height>540</height>
    </size>
   </property>
@@ -36,7 +36,7 @@
    <widget class="QPushButton" name="downloadButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>710</x>
       <y>440</y>
       <width>141</width>
       <height>31</height>
@@ -93,8 +93,8 @@
    <widget class="QPushButton" name="searchButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>250</y>
+      <x>710</x>
+      <y>260</y>
       <width>141</width>
       <height>71</height>
      </rect>
@@ -107,7 +107,7 @@ Search</string>
    <widget class="QPushButton" name="browseButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>710</x>
       <y>390</y>
       <width>141</width>
       <height>31</height>
@@ -146,9 +146,9 @@ Search</string>
    <widget class="QLabel" name="downloadCompleteLabel">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>390</x>
       <y>440</y>
-      <width>621</width>
+      <width>261</width>
       <height>41</height>
      </rect>
     </property>
@@ -227,7 +227,7 @@ Search</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>860</width>
+     <width>870</width>
      <height>21</height>
     </rect>
    </property>

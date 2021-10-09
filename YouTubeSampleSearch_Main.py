@@ -106,28 +106,28 @@ class Window(QMainWindow, Ui_MainWindow):
 
         # lets the user decide the destination for the audio they want to download
 
-        self.linkString = self.youTubeURLTextEdit.text()
-        self.YouTubeURL = YouTube(self.linkString)
+        self.dlComplete
+
+        self.YouTubeURL = YouTube(self.youTubeURLTextEdit.text())
 
         self.fileLocation = QFileDialog.getExistingDirectory(self, 'Save File')
-        self.fileName = self.removeReservedChars(str(self.YouTubeURL.title))
+        self.fileName = self.removeReservedChars(self.YouTubeURL.title)
         print(self.fileName)
 
         if self.fileLocation:
             self.fileLocationTextEdit.setText(
                 f'{self.fileLocation}/{self.fileName}')
 
-    @pyqtSlot()
     def downloadButtonPushed(self):
 
         # Converts the youtube video in the YouTube URL bar into an mp4 and then an mp3, also gives a prompt when the download's complete
 
-        audioLink = YouTube(self.youTubeURLTextEdit.text())
-        audioFile = audioLink.streams.get_audio_only()
+        # audioLink = YouTube(self.youTubeURLTextEdit.text())
+        audioFile = self.YouTubeURL.streams.get_audio_only()
         output = audioFile.download(
-            output_path=self.fileLocation, filename=self.fileName)
+            output_path=self.fileLocation)
 
-        self.linkString.register_on_progress_callback(self.fileProgress)
+        self.YouTubeURL.register_on_progress_callback(self.fileProgress)
 
         file, ext = os.path.splitext(output)
         mp3File = file + '.mp3'
