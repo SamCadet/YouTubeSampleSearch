@@ -3,7 +3,6 @@ from YouTubeSampleSearch_Ui import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtCore import pyqtSlot
 import random
 from pytube import YouTube
 import os
@@ -23,7 +22,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.browseButton.clicked.connect(self.browseButtonPushed)
         self.downloadButton.clicked.connect(self.downloadButtonPushed)
         self.youTubeURLTextEdit
-        self.dlComplete = self.downloadCompleteLabel.setText("")
 
     def timePeriodGroup(self):
 
@@ -83,8 +81,6 @@ class Window(QMainWindow, Ui_MainWindow):
 
         # automates a YouTube search of the aforementioned terms into a new browser tab
 
-        self.dlComplete
-
         self.timePeriodGroup()
         self.regionGroup()
         self.genreGroup()
@@ -93,6 +89,8 @@ class Window(QMainWindow, Ui_MainWindow):
             f'https://www.youtube.com/results?search_query={self.randomTimePeriodLabel.text()}+{self.randomRegionLabel.text()}+{self.randomGenreLabel.text()}')
 
     def removeReservedChars(self, youTubeURL):
+
+        # eliminates characters that can't be used when saving files to Windows
 
         reservedChars = {'<', '>', ':', '"', '/', '\\', '|', '?', '*'}
 
@@ -106,9 +104,12 @@ class Window(QMainWindow, Ui_MainWindow):
 
         # lets the user decide the destination for the audio they want to download
 
-        self.dlComplete
+        self.downloadCompleteLabel.setText("")
 
-        self.YouTubeURL = YouTube(self.youTubeURLTextEdit.text())
+        self.progressBar.setValue(0)
+
+        self.YouTubeURL = YouTube(
+            self.youTubeURLTextEdit.text(), on_progress_callback=self.fileProgress)
 
         self.fileLocation = QFileDialog.getExistingDirectory(self, 'Save File')
         self.fileName = self.removeReservedChars(self.YouTubeURL.title)
@@ -122,21 +123,23 @@ class Window(QMainWindow, Ui_MainWindow):
 
         # Converts the youtube video in the YouTube URL bar into an mp4 and then an mp3, also gives a prompt when the download's complete
 
-        # audioLink = YouTube(self.youTubeURLTextEdit.text())
-        audioFile = self.YouTubeURL.streams.get_audio_only()
-        output = audioFile.download(
-            output_path=self.fileLocation)
+        self.downloadCompleteLabel.setText("")
 
-        self.YouTubeURL.register_on_progress_callback(self.fileProgress)
+        self.progressBar.setValue(0)
+
+        audioFile = self.YouTubeURL.streams.get_audio_only()
+        output = audioFile.download(output_path=self.fileLocation)
 
         file, ext = os.path.splitext(output)
         mp3File = file + '.mp3'
         os.rename(output, mp3File)
 
-        self.dlComplete = self.downloadCompleteLabel.setText(
-            "Download Complete!")
+        self.downloadCompleteLabel.setText("Download Complete!")
 
     def fileProgress(self, stream, chunk, bytes_remaining):
+
+        # updates the progress bar as the file downloads
+
         size = stream.filesize
         progress = int((abs(bytes_remaining - size) / size)) * 100
         self.progressBar.setValue(progress)
